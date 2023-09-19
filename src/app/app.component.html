@@ -1,0 +1,55 @@
+<form [formGroup]="testForm" (ngSubmit)="onSubmit($event)">
+  <label class="forms-mat-lable">Toppings :</label>
+  <mat-form-field fxFlex="750px" appearance="outline">
+    <div class="select-container">
+      <mat-select
+        [value]="null"
+        id="selectedToppings"
+        name="selectedToppings"
+        formControlName="selectedToppings"
+        style="width: 100%; height: 1em"
+        (selectionChange)="toppingChange($event.value)"
+        aria-label="Selected Toppings"
+        multiple
+      >
+        <mat-option disabled>-- Select --</mat-option>
+        <mat-option value="Extra cheese">Extra cheese</mat-option>
+        <mat-option value="Mushroom">Mushroom</mat-option>
+        <mat-option value="Onion">Onion</mat-option>
+        <mat-option value="Pepperoni">Pepperoni</mat-option>
+        <mat-option value="Sausage">Sausage</mat-option>
+      </mat-select>
+    </div>
+  </mat-form-field>
+
+  <div>
+    <p>Form validity: {{ testForm.valid }}</p>
+    <p>Form errors: {{ testForm.errors | json }}</p>
+    <p>
+      Form invalid selection:
+      {{ testForm.get('selectedToppings')?.errors?.['invalidSelection'] | json }}
+    </p>
+    <p>
+      Form required:
+      {{ testForm.get("selectedToppings")?.hasError("required") }}
+    </p>
+    <p>Form touched: {{ testForm.get("selectedToppings")?.touched }}</p>
+    <mat-error
+      *ngIf="
+        testForm.get('selectedToppings')?.hasError('invalidSelection') &&
+        testForm.touched
+      "
+    >
+      Invalid selection. Please check your toppings.
+    </mat-error>
+    <mat-error
+      *ngIf="
+        testForm.get('selectedToppings')?.hasError('required') &&
+        testForm.get('selectedToppings')?.touched
+      "
+    >
+      Required
+    </mat-error>
+    <button type="submit">Submit</button>
+  </div>
+</form>
